@@ -52,8 +52,9 @@ sequelize.sync({ force: true }).then(() => {
                 })
             ])
         }).then(() => {
+            var p = findPersonIdByLastName('Bullrich')
             return Promise.all([
-                createPersonJob(1, 1, '2017-01-01', new Date())
+                createPersonJob(p, 1, '2015-12-10')
             ])
         })
     ])
@@ -83,3 +84,9 @@ sequelize.sync({ force: true }).then(() => {
 
 var is2o = is => is.map(i2o)
 var i2o = i => i.get()
+
+function findPersonIdByLastName(lname) {
+    return Person.findOne({
+        where: { lastName: 'Bullrich' }
+    }).then(p => p ? p.id : p)
+}

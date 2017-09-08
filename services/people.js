@@ -12,10 +12,12 @@ function createPerson({ name = required('name'), ssn }) {
 
 function createPersonJob(PersonId = required('PersonId'), JobId = required('JobId'), start = required(), end = required()) {
     var PersonJob = sequelize.model('PersonJob')
-    return PersonJob.create({
-        PersonId: PersonId, JobId: JobId,
-        start, end
-    }).catch(err => console.error(err))
+    return Promise.all([PersonId, JobId, start, end]).then(([PersonId, JobId, start, end]) => {
+        return PersonJob.create({
+            PersonId: PersonId, JobId: JobId,
+            start, end
+        }).catch(err => console.error(err))
+    })
 }
 
 Object.assign(module.exports, {
