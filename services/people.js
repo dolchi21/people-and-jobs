@@ -1,7 +1,8 @@
 var sequelize = require('../sequelize')
 
+var Person = sequelize.model('Person')
+
 function createPerson({ name = required('name'), ssn }) {
-    var Person = sequelize.model('Person')
     var [firstName, lastName] = name.split(' ')
     return Person.create({
         firstName, lastName
@@ -19,10 +20,16 @@ function createPersonJob(PersonId = required('PersonId'), JobId = required('JobI
         }).catch(err => console.error(err))
     })
 }
+function findPersonIdByLastName(lname) {
+    return Person.findOne({
+        where: { lastName: lname }
+    }).then(p => p ? p.id : p)
+}
 
 Object.assign(module.exports, {
     createPerson,
-    createPersonJob
+    createPersonJob,
+    findPersonIdByLastName
 })
 
 function required(data) {
