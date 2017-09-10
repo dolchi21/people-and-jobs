@@ -1,7 +1,8 @@
 var sequelize = require('../sequelize')
 
-function createJob({ name, JurisdictionId }) {
-    var Job = sequelize.model('Job')
+var { Job, Jurisdiction } = sequelize.models
+
+var createJob = exports.createJob = function createJob({ name, JurisdictionId }) {
     return Job.create({
         name
     }).catch(err => {
@@ -9,6 +10,15 @@ function createJob({ name, JurisdictionId }) {
     })
 }
 
-Object.assign(module.exports, {
-    createJob
-})
+var all = exports.all = function all() {
+    return Job.all({
+        include: [{ model: Jurisdiction }]
+    }).then(jobs => {
+        return jobs.map(({ id, name, JurisdictionId, Jurisdiction }) => {
+            return {
+                id, name, JurisdictionId,
+                jurisdiction: Jurisdiction.name
+            }
+        })
+    })
+}
