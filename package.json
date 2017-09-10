@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "debug": "^3.0.1",
+    "express": "^4.15.4",
     "knex": "^0.13.0",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
