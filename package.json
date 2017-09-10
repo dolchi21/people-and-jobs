@@ -10,6 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "knex": "^0.13.0",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0",
     "sequelize": "^4.8.0",
     "sqlite3": "^3.1.9"
   }
