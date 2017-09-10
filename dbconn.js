@@ -31,18 +31,28 @@ function connection() {
         }
     })
 
+    var PersonJobOptions = {
+        tableName: 'PersonJob',
+        indexes: [
+            {
+                unique: true,
+                fields: ['PersonId', 'JobId', 'start']
+            }
+        ]
+    }
     var PersonJob = sequelize.define('PersonJob', {
+        id: {
+            type: Sequelize.INTEGER,
+            primaryKey: true
+        },
         start: {
             type: Sequelize.DATE,
             allowNull: false
         },
         end: {
-            type: Sequelize.DATE,
-            allowNull: false
+            type: Sequelize.DATE
         }
-    }, { tableName: 'PersonJob' })
-    PersonJob.belongsTo(Person)
-    PersonJob.belongsTo(Job)
+    }, PersonJobOptions)
 
     var JurisdictionOptions = {
         indexes: [{ unique: true, fields: ['name', 'parentJurisdictionId'] }]
@@ -55,6 +65,11 @@ function connection() {
 
     Job.belongsTo(Jurisdiction)
     Jurisdiction.belongsTo(Jurisdiction, { as: 'parentJurisdiction' })
+
+    Person.hasMany(PersonJob)
+    Job.hasMany(PersonJob)
+
+    PersonJob.belongsTo(Job)
 
     return sequelize
 }
