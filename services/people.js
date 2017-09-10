@@ -1,3 +1,4 @@
+var debug = require('debug')('service:people')
 var sequelize = require('../sequelize')
 var knex = require('knex')({
     client: 'sqlite'
@@ -6,6 +7,7 @@ var knex = require('knex')({
 var Person = sequelize.model('Person')
 
 function createPerson({ name = required('name'), ssn }) {
+    debug('Creating person %s (%s)', name, ssn)
     var [firstName, lastName] = name.split(' ')
     return Person.create({
         ssn, firstName, lastName
@@ -27,23 +29,51 @@ function findPersonIdByLastName(lname) {
     }).then(p => p ? p.id : p)
 }
 function findBySSN(ssn = required('SSN')) {
+    debug('Getting %s', ssn)
     return Person.findOne({
-        where: { ssn },
-        include: [{ all: true }]
+        where: { ssn }
     }).then(p => {
         return {
             ssn: p.ssn,
-            name: [p.firstName, p.lastName].join(' '),
-            jobs: p.PersonJobs.map(pj => pj.get())
+            name: [p.firstName, p.lastName].join(' ')
         }
     })
 }
+function findPersonIdBySSN(ssn = required('SSN')) {
+    debug('Getting id %s', ssn)
+    return Person.findOne({
+        where: { ssn }
+    }).then(p => p ? p.id : p)
+}
+function all() {
+    return Person.all().then(people => {
+        return people.map(({ id, ssn, firstName, lastName }) => {
+            return {
+                id, ssn, name: [firstName, lastName].join(' ')
+            }
+        })
+    })
+}
 
-function personJobs(personId) {
-    return sequelize.model('PersonJob').all({
-        where:{
-            
-        }
+function getJobsBySSN(ssn) {
+    return findPersonIdBySSN(ssn).then(id => {
+        return sequelize.models.PersonJob.all({
+            where: {
+                PersonId: id
+            },
+            include: [{ model: sequelize.models.Job }]
+        })
+    }).then(jobs => {
+        return jobs.map(job => {
+            return {
+                id: job.id,
+                name: job.Job.name,
+                start: job.start,
+                end: job.end,
+                JobId: job.JobId,
+                JurisdictionId: job.Job.JurisdictionId
+            }
+        })
     })
 }
 
@@ -53,7 +83,10 @@ function required(data) {
     throw err
 }
 
+exports.getJobsBySSN = getJobsBySSN
 exports.createPerson = createPerson
 exports.createPersonJob = createPersonJob
 exports.findPersonIdByLastName = findPersonIdByLastName
 exports.findBySSN = findBySSN
+exports.findPersonIdBySSN = findPersonIdBySSN
+exports.all = all
