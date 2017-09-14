@@ -1,2 +1,11 @@
 .table {
   width: 100%; }
+
+.main-btn:hover {
+  box-shadow: 1px 1px 5px #888; }
+
+.main-btn button {
+  height: 10rem;
+  width: 10rem;
+  border: 0;
+  background-color: cornflowerblue; }

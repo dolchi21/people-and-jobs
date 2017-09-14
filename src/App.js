@@ -5,6 +5,7 @@ import './App.css';
 
 import store from './store'
 
+import JobsMenu from './containers/JobsMenu'
 import PeopleList from './containers/PeopleList'
 import PersonProfile from './containers/PersonProfile'
 
@@ -16,20 +17,36 @@ class App extends Component {
 				<Router>
 					<div>
 						<div>
-							<Link to="/">App</Link>
+							<Link to="/">Home</Link>
 						</div>
 						<Route exact path={'/'} render={props => {
 							return (
-								<div>
-									<Link to="/people">People</Link>
+								<div style={{ display: 'flex', justifyContent: 'space-around', paddingTop: '30vh' }}>
+									<div className="main-btn">
+										<Link to="/people">
+											<button>People</button>
+										</Link>
+									</div>
+									<div className="main-btn">
+										<Link to="/jobs">
+											<button>Jobs</button>
+										</Link>
+									</div>
+									<div className="main-btn">
+										<Link to="/snapshots">
+											<button>Snapshots</button>
+										</Link>
+									</div>
 								</div>
 							)
 						}} />
 						<Route exact path={'/people'} component={PeopleList} />
 						<Route path={'/people/:id'} render={props => {
 							var { id } = props.match.params
-							return <PersonProfile id={parseInt(id)} />
+							return <PersonProfile id={+id} />
 						}} />
+						<Route exact path="/jobs" component={JobsMenu} />
+						<Route path="/snapshots" component={SnapshotMenu} />
 					</div>
 				</Router>
 			</Provider>
@@ -38,3 +55,14 @@ class App extends Component {
 }
 
 export default App;
+
+var SnapshotMenu = props => {
+	return (
+		<div>
+			<h4>SnapshotMenu</h4>
+			<div>
+
+			</div>
+		</div>
+	)
+}
