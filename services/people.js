@@ -70,6 +70,7 @@ function getJobsBySSN(ssn) {
                 name: job.Job.name,
                 start: job.start,
                 end: job.end,
+                PersonId: job.PersonId,
                 JobId: job.JobId,
                 JurisdictionId: job.Job.JurisdictionId
             }
