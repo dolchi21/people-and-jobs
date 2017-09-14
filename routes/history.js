@@ -23,6 +23,7 @@ router.get('/byDate/:date', (req, res, next) => {
             return {
                 name: [row.firstName, row.lastName].join(' '),
                 job: row.name,
+                start: row.start, end: row.end,
                 PersonId: row.PersonId,
                 JobId: row.JobId,
                 id: row.id
