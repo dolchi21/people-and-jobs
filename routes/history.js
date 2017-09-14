@@ -22,14 +22,19 @@ router.get('/byDate/:date', (req, res, next) => {
         var people = rs.map(row => {
             return {
                 name: [row.firstName, row.lastName].join(' '),
-                job: row.name
+                job: row.name,
+                PersonId: row.PersonId,
+                JobId: row.JobId,
+                id: row.id
             }
         })
 
         res.json({
-            sql: sql.toString(),
-            people,
-            rs,
+            meta: {
+                sql: sql.toString(),
+                rs,
+            },
+            data: people
         })
 
     }).catch(next)
