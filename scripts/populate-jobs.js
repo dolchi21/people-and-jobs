@@ -21,13 +21,13 @@ Promise.all([]).then(() => {
     var presidente = findJobId('Presidente Nación')
     var jefeCABA = findJobId('Jefe Gobierno Ciudad')
     var diputado = {
-        caba: findJobId('Diputado Nación Ciudad Buenos'),
-        stacruz: findJobId('Diputado Nación Santa Cruz')
+        caba: findJobId('Diputado de la Nación por la Ciudad de Buenos Aires'),
+        stacruz: findJobId('Diputado de la Nación por la provincia de Santa Cruz')
     }
     var senador = {
-        caba: findJobId('Senador Nación la Ciudad Buenos'),
-        bsas: findJobId('Senador Nación prov Buenos Aires'),
-        stacruz: findJobId('Senador Nación prov Santa Cruz')
+        caba: findJobId('Senador de la Nación por la Ciudad de Buenos Aires'),
+        bsas: findJobId('Senador de la Nación por la provincia de Buenos Aires'),
+        stacruz: findJobId('Senador de la Nación por la provincia de Santa Cruz')
     }
     var min = {
         seg: findJobId('Ministro Seguridad Nación')
