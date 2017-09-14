@@ -8,7 +8,7 @@ var PeopleList = props => {
     var people = props.people
     return (
         <div>
-            <div>Home</div>
+            <h4>People</h4>
             {people.map(person => {
                 return <Person key={person.ssn} id={person.id} />
             })}
