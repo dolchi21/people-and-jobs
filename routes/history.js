@@ -15,7 +15,9 @@ router.get('/byDate/:date', (req, res, next) => {
     var sql = knex('PersonJob')
         .join('People', 'PersonJob.PersonId', 'People.id')
         .join('Jobs', 'PersonJob.JobId', 'Jobs.id')
-        .select().where('start', '<', date).where('end', '>', date)
+        .select('People.*', 'Jobs.*', 'PersonJob.*').where('start', '<', date).where(function(){
+            this.where('end', '>', date).orWhere('end', null)
+        })
 
     sequelize.query(sql.toString()).then(rs => rs[0]).then(rs => {
 
