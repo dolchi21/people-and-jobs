@@ -2,6 +2,8 @@ import axios from 'axios'
 import * as Jobs from '../modules/Jobs'
 import * as PersonJobs from '../modules/PersonJobs'
 
+axios.defaults.baseURL = 'https://politics-api.herokuapp.com/'
+
 export var loadPeople = require('./people').loadPeople
 export function loadJobs() {
     return dispatch => {
@@ -24,4 +26,17 @@ export function loadJobsBySSN(ssn) {
             actions.map(dispatch)
         })
     }
+}
+
+(async () => {
+    while (true) {
+        var response = await axios.get('/')
+        await sleep(1000 * 60)
+    }
+})()
+
+function sleep(ms) {
+    return new Promise(resolve => {
+        setTimeout(resolve, ms)
+    })
 }

@@ -1,0 +1,9 @@
+.c-Header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+.c-MainLinks {
+    @extend .grid-3x1;
+    grid-gap: 0.25rem;
+    padding: 0.25rem;
+}

@@ -1,14 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
+import Person from './Person'
+
 var JobsMenu = props => {
     console.log('JobsMenu.render')
     var { jobs } = props
     return (
         <div>
-            <h4>Jobs</h4>
-            {jobs.map(job =>
-                <Job key={job.id} id={job.id} />)}
+            <div>Jobs</div>
+            {jobs.map(job => {
+                return <Job id={job.id} />
+            })}
         </div>
     )
 }

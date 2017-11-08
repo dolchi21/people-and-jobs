@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux'
 import { HashRouter as Router, Route, Link } from 'react-router-dom'
+
+import { Card } from 'antd'
+
 import './App.css';
 
 import store from './store'
@@ -15,28 +18,23 @@ class App extends Component {
 		return (
 			<Provider store={store}>
 				<Router>
-					<div>
-						<div>
-							<Link to="/">Home</Link>
+					<div className="c-App">
+						<div className="c-Header">
+							<HomeLink to="/" md>Home</HomeLink>
 						</div>
 						<Route exact path={'/'} render={props => {
 							return (
-								<div style={{ display: 'flex', justifyContent: 'space-around', paddingTop: '30vh' }}>
-									<div className="main-btn">
-										<Link to="/people">
-											<button>People</button>
-										</Link>
-									</div>
-									<div className="main-btn">
-										<Link to="/jobs">
-											<button>Jobs</button>
-										</Link>
-									</div>
-									<div className="main-btn">
-										<Link to="/snapshots">
-											<button>Snapshots</button>
-										</Link>
-									</div>
+								<div className="c-MainLinks">
+									<LargeHomeLink to="/people" label="People" />
+									<HomeLink to="/jobs" label="Jobs" />
+									<HomeLink to="/snapshots" label="Snapshots" />
+									<LargeHomeLink to="/jobs" label="Jobs" style={{ gridColumn: '1/3' }} />
+									<HomeLink to="/people" label="People" />
+									<Card title="People">content</Card>
+									<Card title="People">content</Card>
+									<Card title="People">content</Card>
+									<Card title="People">content</Card>
+									<Card title="People" style={{ gridColumn: '2/4' }}>content</Card>
 								</div>
 							)
 						}} />
@@ -55,6 +53,31 @@ class App extends Component {
 }
 
 export default App;
+
+var ButtonLink = ({ children, to, style }) => {
+	return (
+		<Link to={to} style={style}>
+			{children}
+		</Link>
+	)
+}
+var HomeLink = ({ children, label, md, to, size, style }) => {
+	var style = Object.assign({
+		height: (md && '3rem') || HomeLink.size2rem(size)
+	}, style)
+	return (
+		<Link to={to} style={style} className="main-btn">
+			<span>{label}</span>
+		</Link>
+	)
+}
+HomeLink.size2rem = str => {
+	switch (str) {
+		case 'large': return '6rem'
+		//default: return '3rem'
+	}
+}
+var LargeHomeLink = props => <HomeLink size="large" {...props} />
 
 var SnapshotMenu = props => {
 	return (

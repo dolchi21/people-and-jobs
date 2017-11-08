@@ -1,14 +1,36 @@
+* {
+    transition: all 0.3s;
+}
+body {
+    background-color: hsla(300, 100%, 72%, 1);
+}
 .table {
     width: 100%;
 }
 .main-btn {
+    
+    display: table;
+    span { display: table-cell; vertical-align: middle; }
+
+    background-color: hsla(219, 100%, 50%, 1);
+    border: 0;
+    color: gainsboro;
+    cursor: pointer;
+    font-size: 1.5rem;
+    font-weight: bold;
+    height: 100%;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.3s;
+    width: 100%;
     &:hover {
-        box-shadow: 1px 1px 5px #888;
-    }
-    button {
-        height: 10rem;
-        width: 10rem;
-        border: 0;
-        background-color: cornflowerblue;
+        background-color: cyan;
+        box-shadow: 1px 1px 40px #888;
+        color: #ffe5f2;
+        text-shadow: 2px 2px 2px hotpink;
+        transform: translate(0, 0.25rem)
     }
 }
+
+@import './grid.scss';
+@import './components.scss'
