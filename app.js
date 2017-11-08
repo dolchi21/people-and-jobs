@@ -10,7 +10,7 @@ app.use(cors())
 app.use(logger('dev'))
 app.use(bodyParser.json())
 app.use('/api', (req, res, next) => {
-    setTimeout(next, 1000)
+    //setTimeout(next, 1000)
 })
 app.use('/api', require('./routes/api'))
 
