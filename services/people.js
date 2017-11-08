@@ -28,16 +28,24 @@ function findPersonIdByLastName(lname) {
         where: { lastName: lname }
     }).then(p => p ? p.id : p)
 }
-function findBySSN(ssn = required('SSN')) {
+async function findById(id = required('PersonId')) {
+    var p = await Person.findById(id)
+    return {
+        id: p.id,
+        ssn: p.ssn,
+        name: [p.firstName, p.lastName].join(' ')
+    }
+}
+async function findBySSN(ssn = required('SSN')) {
     debug('Getting %s', ssn)
-    return Person.findOne({
+    var p = await Person.findOne({
         where: { ssn }
-    }).then(p => {
-        return {
-            ssn: p.ssn,
-            name: [p.firstName, p.lastName].join(' ')
-        }
     })
+    return {
+        id: p.id,
+        ssn: p.ssn,
+        name: [p.firstName, p.lastName].join(' ')
+    }
 }
 function findPersonIdBySSN(ssn = required('SSN')) {
     debug('Getting id %s', ssn)
@@ -45,36 +53,33 @@ function findPersonIdBySSN(ssn = required('SSN')) {
         where: { ssn }
     }).then(p => p ? p.id : p)
 }
-function all() {
-    return Person.all().then(people => {
-        return people.map(({ id, ssn, firstName, lastName }) => {
-            return {
-                id, ssn, name: [firstName, lastName].join(' ')
-            }
-        })
+async function all() {
+    var people = await Person.all()
+    return people.map(({ id, ssn, firstName, lastName }) => {
+        return {
+            id, ssn, name: [firstName, lastName].join(' ')
+        }
     })
 }
 
-function getJobsBySSN(ssn) {
-    return findPersonIdBySSN(ssn).then(id => {
-        return sequelize.models.PersonJob.all({
-            where: {
-                PersonId: id
-            },
-            include: [{ model: sequelize.models.Job }]
-        })
-    }).then(jobs => {
-        return jobs.map(job => {
-            return {
-                id: job.id,
-                name: job.Job.name,
-                start: job.start,
-                end: job.end,
-                PersonId: job.PersonId,
-                JobId: job.JobId,
-                JurisdictionId: job.Job.JurisdictionId
-            }
-        })
+async function getJobsBySSN(ssn) {
+    var id = await findPersonIdBySSN(ssn)
+    var jobs = await sequelize.model('PersonJob').all({
+        where: {
+            PersonId: id
+        },
+        include: [{ model: sequelize.models.Job }]
+    })
+    return jobs.map(job => {
+        return {
+            id: job.id,
+            name: job.Job.name,
+            start: job.start,
+            end: job.end,
+            PersonId: job.PersonId,
+            JobId: job.JobId,
+            JurisdictionId: job.Job.JurisdictionId
+        }
     })
 }
 
@@ -84,10 +89,13 @@ function required(data) {
     throw err
 }
 
-exports.getJobsBySSN = getJobsBySSN
-exports.createPerson = createPerson
-exports.createPersonJob = createPersonJob
-exports.findPersonIdByLastName = findPersonIdByLastName
-exports.findBySSN = findBySSN
-exports.findPersonIdBySSN = findPersonIdBySSN
-exports.all = all
+module.exports = {
+    all,
+    createPerson,
+    createPersonJob,
+    findById,
+    findBySSN,
+    findPersonIdByLastName,
+    findPersonIdBySSN,
+    getJobsBySSN
+}
